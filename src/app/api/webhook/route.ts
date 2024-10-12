@@ -1,18 +1,19 @@
-import { NextApiRequest, NextApiResponse } from "next";
+import { NextApiRequest } from "next";
 import { getToken } from "next-auth/jwt";
 import axios from 'axios'
 
- export async function POST (req:NextApiRequest,res:NextApiResponse){
+ export async function POST (req:NextApiRequest){
    
         try {
            const token = await getToken({req});
            console.log(token);
-           if(!token)return res.status(401).json({message:"Github token is missing"});
+           
+           if(!token)return Response.json({message:"Github token is missing"});
 
 
            const {owner,repo, webhookUrl}   = req.body;
 
-           if(!owner ||!repo || !webhookUrl)  return res.status(400).json({ message: 'Missing required fields: owner, repo, or webhookUrl' });
+           if(!owner ||!repo || !webhookUrl)  return Response.json({ message: 'Missing required fields: owner, repo, or webhookUrl' });
 
            const url = `https://api.github.com/repos/${owner}/${repo}/hooks`
 
@@ -31,10 +32,10 @@ import axios from 'axios'
             Authorization:`Bearer ${token}`,
             Accept:'application/vnd.github+json',
            }})
-           return res.status(200).json({ message: 'Webhook created successfully', data: response.data });
+           return Response.json({ message: 'Webhook created successfully', data: response.data });
         } catch (error) {
             console.error('Error creating webhook:', error);
-    return res.status(500).json({ message: 'Failed to create webhook', error: error.message });
+    return Response.json({ message: 'Failed to create webhook', error: error.message });
         }
     }
 
