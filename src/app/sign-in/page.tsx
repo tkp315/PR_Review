@@ -1,6 +1,6 @@
 "use client";
 import { useEffect } from "react";
-import { useSession, signIn, signOut } from "next-auth/react";
+import { useSession, signIn, } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 
@@ -11,7 +11,7 @@ export default function SignInPage() {
   // Redirect if user is logged in
   useEffect(() => {
     if (status === "authenticated") {
-      router.push("/");
+      router.push("/webhook-form");
     }
   }, [status, router]);
   useEffect(() => {
