@@ -2,7 +2,7 @@ import { NextApiRequest, NextApiResponse } from "next";
 import { getToken } from "next-auth/jwt";
 import axios from 'axios'
 
-async function handler (req:NextApiRequest,res:NextApiResponse){
+ export async function post (req:NextApiRequest,res:NextApiResponse){
     if(req.method!=='POST'){
         return res.status(405).json({messge:"Only POST request are allowed"})
     }
@@ -41,4 +41,3 @@ async function handler (req:NextApiRequest,res:NextApiResponse){
     }
 
 
-export {handler}
