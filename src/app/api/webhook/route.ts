@@ -1,6 +1,6 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { getToken } from "next-auth/jwt";
-import axios, { AxiosError } from 'axios'
+import axios from 'axios'
 
 async function handler (req:NextApiRequest,res:NextApiResponse){
     if(req.method!=='POST'){
@@ -12,7 +12,7 @@ async function handler (req:NextApiRequest,res:NextApiResponse){
            if(!token)return res.status(401).json({message:"Github token is missing"});
 
 
-           const {owner,repo, webhookUrl,secret=""}   = req.body;
+           const {owner,repo, webhookUrl}   = req.body;
 
            if(!owner ||!repo || !webhookUrl)  return res.status(400).json({ message: 'Missing required fields: owner, repo, or webhookUrl' });
 
@@ -25,7 +25,7 @@ async function handler (req:NextApiRequest,res:NextApiResponse){
             config:{
                 url:webhookUrl,
                 content_type:'json',
-                secret
+                
             }
            }
 

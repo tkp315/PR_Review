@@ -17,7 +17,7 @@ const inputFieldData: Array<{
   { field: "owner", type: "text", label: "Owner Name" },
   { field: "repo", type: "text", label: "Repository Name" },
   { field: "webhookUrl", type: "text", label: "webhookUrl" },
-  { field: "secret", type: "text", label: "Secret" },
+
 ];
 
 
@@ -26,7 +26,7 @@ const formSchema = z.object({
   repo: z.string().min(1, { message: "Repo name is required" }),
   webhookUrl: z.string(),
 
-  secret: z.string(),
+  
 });
 
 type FormData = z.infer<typeof formSchema>;
@@ -40,7 +40,7 @@ function Page() {
       repo: "",
       webhookUrl: "",
      
-      secret: "",
+     
     },
   });
 
@@ -54,7 +54,7 @@ function Page() {
       const res = await axios.post("api/webhook", data);
 
       console.log(res);
-    } catch (error: any) {
+    } catch (error) {
       console.log("Error creating lead", error);
     } finally {
       setIsSubmitting(false);
