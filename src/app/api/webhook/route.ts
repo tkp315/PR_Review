@@ -2,10 +2,8 @@ import { NextApiRequest, NextApiResponse } from "next";
 import { getToken } from "next-auth/jwt";
 import axios from 'axios'
 
- export async function post (req:NextApiRequest,res:NextApiResponse){
-    if(req.method!=='POST'){
-        return res.status(405).json({messge:"Only POST request are allowed"})
-    }
+ export async function POST (req:NextApiRequest,res:NextApiResponse){
+   
         try {
            const token = await getToken({req});
            console.log(token);
