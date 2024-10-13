@@ -1,11 +1,11 @@
 "use client";
+
 import { z } from "zod";
 import React, { useState } from "react";
-import { SubmitHandler, useForm } from "react-hook-form";
+import { SubmitHandler, useForm, FormProvider } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import axios from "axios";
 import { useSession } from "next-auth/react";
-import { FormProvider } from "react-hook-form";
 import {
   FormField,
   FormItem,
@@ -17,6 +17,7 @@ import { FiLoader } from "react-icons/fi";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 
+// Define input field data
 const inputFieldData: Array<{
   field: keyof FormData;
   type: string;
@@ -27,12 +28,14 @@ const inputFieldData: Array<{
   { field: "webhookUrl", type: "text", label: "Webhook URL" },
 ];
 
+// Define the form schema
 const formSchema = z.object({
   owner: z.string().min(1, { message: "Owner name is required" }),
   repo: z.string().min(1, { message: "Repo name is required" }),
   webhookUrl: z.string().url({ message: "Invalid webhook URL" }),
 });
 
+// Infer the FormData type from the schema
 type FormData = z.infer<typeof formSchema>;
 
 function Page() {
@@ -49,22 +52,21 @@ function Page() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const { data: session } = useSession();
-  console.log(session?.accessToken)
-
+   console.log(session)
   const onSubmit: SubmitHandler<FormData> = async (data) => {
+    // Check if session and access token are available
     if (!session || !session.accessToken) {
       console.error("Access token is not available");
       setErrorMessage("Access token is not available");
       return;
     }
-    console.log(session)
 
     setIsSubmitting(true);
-
     setErrorMessage(null); // Reset error message
 
     try {
-      const res = await axios.post("/api/webhook", { ...data }, {
+      // Send a POST request to create the webhook
+      const res = await axios.post("/api/create-webhook", { ...data, accessToken: session.accessToken }, {
         headers: {
           Authorization: `Bearer ${session.accessToken}`, // Pass the token in the Authorization header
           "Content-Type": "application/json",
@@ -81,7 +83,7 @@ function Page() {
   };
 
   return (
-    <div className="justify-center items-center flex min-h-screen">
+    <div className="flex justify-center items-center min-h-screen">
       <div className="w-fit p-10 bg-slate-200 shadow-lg rounded-md">
         <FormProvider {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="mt-3 flex flex-col gap-4">
