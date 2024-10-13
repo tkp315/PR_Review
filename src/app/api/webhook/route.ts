@@ -2,9 +2,11 @@ import { NextRequest, NextResponse } from 'next/server';
 import { getToken } from 'next-auth/jwt';
 import axios from 'axios';
 
+
+
 export async function POST(req: NextRequest) {
   try {
- 
+    
     const token = await getToken({ req, secret: process.env.NEXTAUTH_SECRET, raw: true });
     console.log("Token:", token);
     console.log(token);
@@ -13,7 +15,7 @@ export async function POST(req: NextRequest) {
     }
 
     
-    const { owner, repo, webhookUrl } = await req.json();
+    const { owner, repo, webhookUrl,accessToken } = await req.json();
 
     if (!owner || !repo || !webhookUrl) {
       return NextResponse.json({ message: 'Missing required fields: owner, repo, or webhookUrl' }, { status: 400 });
@@ -35,7 +37,7 @@ export async function POST(req: NextRequest) {
 
     const response = await axios.post(url, webhookData, {
       headers: {
-        Authorization: `Bearer ${token.accessToken}`, 
+        Authorization: `Bearer ${accessToken}`, 
         Accept: 'application/vnd.github+json',
       },
     });
