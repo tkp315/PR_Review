@@ -17,6 +17,9 @@ export async function POST(req: NextRequest) {
     
     const { owner, repo, webhookUrl,accessToken } = await req.json();
 
+    console.log(req.json());
+
+
     if (!owner || !repo || !webhookUrl) {
       return NextResponse.json({ message: 'Missing required fields: owner, repo, or webhookUrl' }, { status: 400 });
     }
@@ -41,7 +44,8 @@ export async function POST(req: NextRequest) {
         Accept: 'application/vnd.github+json',
       },
     });
-
+    
+     console.log(response)
 
     return NextResponse.json({ message: 'Webhook created successfully', data: response.data }, { status: 200 });
 

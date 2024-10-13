@@ -49,6 +49,7 @@ function Page() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const { data: session } = useSession();
+  console.log(session?.accessToken)
 
   const onSubmit: SubmitHandler<FormData> = async (data) => {
     if (!session || !session.accessToken) {
@@ -56,8 +57,10 @@ function Page() {
       setErrorMessage("Access token is not available");
       return;
     }
+    console.log(session)
 
     setIsSubmitting(true);
+
     setErrorMessage(null); // Reset error message
 
     try {
