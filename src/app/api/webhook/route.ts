@@ -5,9 +5,10 @@ import axios from 'axios';
 export async function POST(req: NextRequest) {
   try {
  
-    const token = await getToken({ req });
+    const token = await getToken({ req, secret: process.env.NEXTAUTH_SECRET, raw: true });
+    console.log("Token:", token);
     console.log(token);
-    if (!token || !token.accessToken) {
+    if (!token ) {
       return NextResponse.json({ message: "GitHub token is missing" }, { status: 401 });
     }
 
