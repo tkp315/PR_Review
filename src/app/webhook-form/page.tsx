@@ -17,7 +17,6 @@ import { FiLoader } from "react-icons/fi";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 
-
 const inputFieldData: Array<{
   field: keyof FormData;
   type: string;
@@ -31,8 +30,7 @@ const inputFieldData: Array<{
 const formSchema = z.object({
   owner: z.string().min(1, { message: "Owner name is required" }),
   repo: z.string().min(1, { message: "Repo name is required" }),
-  webhookUrl: z.string().url({ message: "Invalid webhook URL" }), 
-  accessToken:z.string()
+  webhookUrl: z.string().url({ message: "Invalid webhook URL" }),
 });
 
 type FormData = z.infer<typeof formSchema>;
@@ -49,21 +47,23 @@ function Page() {
 
   const { formState: { errors } } = form;
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const { data: session} = useSession();
-  const accessToken = session?.accessToken
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const { data: session } = useSession();
+
   const onSubmit: SubmitHandler<FormData> = async (data) => {
-    if (!accessToken) {
+    if (!session || !session.accessToken) {
       console.error("Access token is not available");
+      setErrorMessage("Access token is not available");
       return;
     }
 
     setIsSubmitting(true);
+    setErrorMessage(null); // Reset error message
 
     try {
-      const dataObj = {...data,accessToken:accessToken}
-      const res = await axios.post("/api/webhook", dataObj, {
+      const res = await axios.post("/api/webhook", { ...data }, {
         headers: {
-          Authorization: `Bearer ${accessToken}`, // Pass the token in the Authorization header
+          Authorization: `Bearer ${session.accessToken}`, // Pass the token in the Authorization header
           "Content-Type": "application/json",
         },
       });
@@ -71,7 +71,7 @@ function Page() {
       console.log("Webhook created successfully:", res.data);
     } catch (error) {
       console.error("Error creating webhook:", error);
-      // Optionally, you can handle the error to display a message to the user
+      setErrorMessage("Failed to create webhook. Please try again.");
     } finally {
       setIsSubmitting(false);
     }
@@ -104,6 +104,9 @@ function Page() {
                 )}
               />
             ))}
+            {errorMessage && (
+              <div className="text-red-500 text-sm mt-2">{errorMessage}</div>
+            )}
             <Button
               type="submit"
               disabled={isSubmitting}
