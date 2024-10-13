@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 
 
 export async function POST(req:NextRequest){
-    try {
+    
         const payload = await req.json();
         console.log(payload);
         const eventType = req.headers.get('x-github-event')
@@ -17,9 +17,6 @@ export async function POST(req:NextRequest){
             return NextResponse.json({message:"pull request prcessed Successfully",prData})
         }
         return NextResponse.json({ message: 'Not a pull request event' }, { status: 400 });
-    } catch (error) {
-        console.error('Error handling GitHub webhook:', error);
-        return NextResponse.json({ message: 'Error processing webhook', error: error.message }, { status: 500 });
-    }
+   
 
 }
