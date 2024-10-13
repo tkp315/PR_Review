@@ -66,16 +66,16 @@ function Page() {
 
     try {
       // Send a POST request to create the webhook
-      const res = await axios.post("/api/create-webhook", { ...data, accessToken: session.accessToken }, {
+      const res = await axios.post("/api/webhook", { ...data, accessToken: session.accessToken }, {
         headers: {
           Authorization: `Bearer ${session.accessToken}`, // Pass the token in the Authorization header
           "Content-Type": "application/json",
         },
       });
-
+        
       console.log("Webhook created successfully:", res.data);
     } catch (error) {
-      console.error("Error creating webhook:", error);
+      console.error("Error creating webhook here:", error);
       setErrorMessage("Failed to create webhook. Please try again.");
     } finally {
       setIsSubmitting(false);
