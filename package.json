@@ -4,11 +4,11 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "next dev & npm run start-ngrok",
+    "dev": "next dev ",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint",
-    "start-ngrok": "node start-ngrok.js"
+    "lint": "next lint"
+   
   },
   "dependencies": {
     "@hookform/resolvers": "^3.9.0",

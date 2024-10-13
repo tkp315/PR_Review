@@ -9,7 +9,7 @@ export const authOptions: NextAuthOptions = {
       clientSecret: process.env.GITHUB_CLIENT_SECRET!,
     }),
   ],
-
+   secret:process.env.NEXT_SECRET,
   callbacks: {
     async session({ session, token }) {
       // You can add token information to the session object here if needed
