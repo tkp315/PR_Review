@@ -10,6 +10,9 @@ export const authOptions: NextAuthOptions = {
     }),
   ],
    secret:process.env.NEXT_SECRET,
+   session: {
+    strategy: 'jwt',
+  },
   callbacks: {
     async session({ session, token }) {
       // You can add token information to the session object here if needed
