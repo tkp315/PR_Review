@@ -10,7 +10,7 @@ export async function POST(req:NextRequest){
         if(eventType==='pull_request'){
             const prData = payload.pull_request;
             console.log("Pull request Data",prData);
-           
+           console.log('created webhook');
 
             return NextResponse.json({message:"pull request prcessed Successfully",prData})
         }
