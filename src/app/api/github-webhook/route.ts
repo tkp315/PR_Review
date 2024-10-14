@@ -21,12 +21,12 @@ export async function POST(req: NextRequest) {
         // Call the OpenAI function with the PR data
         try {
             const aiReview = await reviewPullRequest(pr_obj); // Assuming openAi function takes the PR object
-            console.log("AI Review:", aiReview);
+            
 
             // You might want to post this review back to the PR as a comment
             // This part of the code will depend on how you handle comments in your GitHub repo
             // await postCommentToPR(prData.number, aiReview);
-
+             console.log("I requested for ai review",aiReview)
             return NextResponse.json({ message: "Pull request processed successfully", aiReview });
         } catch (error) {
             console.error("Error getting AI review:", error);
