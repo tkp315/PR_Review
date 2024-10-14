@@ -4,7 +4,8 @@ import { NextRequest, NextResponse } from "next/server";
 export async function POST(req:NextRequest){
     
         const payload = await req.json();
-        console.log(payload);
+
+        console.log("This is payload",payload);
         const eventType = req.headers.get('x-github-event')
         if(eventType==='pull_request'){
             const prData = payload.pull_request;
