@@ -10,10 +10,7 @@ export async function POST(req:NextRequest){
         if(eventType==='pull_request'){
             const prData = payload.pull_request;
             console.log("Pull request Data",prData);
-            const prTitle = prData.title;
-            const prAuthor = prData.user.login;
-            const prState = prData.prData.state;
-            console.log(`Title:${prTitle},Author:${prAuthor},State:${prState}`)
+           
 
             return NextResponse.json({message:"pull request prcessed Successfully",prData})
         }
